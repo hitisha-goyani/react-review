@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 function ReviewSection() {
   const [reviews, setReviews] = useState([]);
-  const [sortOrder, setSortOrder] = useState('desc');
+  const [Order, setSortOrder] = useState('desc');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,18 +10,26 @@ function ReviewSection() {
     const text = e.target.text.value;
     const rating = parseInt(e.target.rating.value);
 
-    const newReview = { name, text, rating, id: Date.now() };
+    const newReview = { 
+      id: Date.now(),
+      name, 
+      text, 
+      rating, 
+      };
+
+
     setReviews([newReview, ...reviews]);
     e.target.reset();
   };
 
   const sortedReviews = [...reviews].sort((a, b) =>
-    sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating
+  Order === 'asc' ? a.rating - b.rating : b.rating - a.rating
   );
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
       <form onSubmit={handleSubmit} className="space-y-4">
+        
         <input
           name="name"
           type="text"
@@ -29,28 +37,24 @@ function ReviewSection() {
           required
           className="w-full p-2 border rounded"
         />
+
         <textarea
           name="text"
           placeholder="Write your review..."
           required
-          className="w-full p-2 border rounded"
-        ></textarea>
+          className="w-full p-2 border rounded"></textarea>
+
         <select
           name="rating"
           required
-          className="w-full p-2 border rounded"
-        >
+          className="w-full p-2 border rounded">
           <option value="">Select Rating</option>
+
           {[1, 2, 3, 4, 5].map((n) => (
             <option key={n} value={n}>{n} Star{n > 1 ? 's' : ''}</option>
           ))}
         </select>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Submit Review
-        </button>
+      <button type="submit" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2">submit</button>
       </form>
 
       <div className="mt-6">
@@ -59,23 +63,23 @@ function ReviewSection() {
           <div>
             <button
               onClick={() => setSortOrder('asc')}
-              className={`px-3 py-1 text-sm border rounded-l ${sortOrder === 'asc' ? 'bg-blue-600 text-white' : 'bg-white'}`}
-            >
+              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
               Lowest
             </button>
-            <button
+            {/* <button
               onClick={() => setSortOrder('desc')}
-              className={`px-3 py-1 text-sm border rounded-r ${sortOrder === 'desc' ? 'bg-blue-600 text-white' : 'bg-white'}`}
-            >
+              className={`px-3 py-1 text-sm border rounded-r ${Order === 'desc' ? 'bg-blue-600 text-white' : 'bg-white'}`}>
               Highest
-            </button>
+            </button> */}
+            <button  onClick={() => setSortOrder('desc')} type="button" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> Highest</button>
+          
           </div>
         </div>
 
         <div className="space-y-4">
           {
           sortedReviews.map((review) => (
-            <div key={review.id} className="border p-4 rounded">
+            <div key={review.id} className="border p-4 rounded bg-blue-200">
               <div className="font-bold">{review.name}</div>
               <div className="text-yellow-500">
                 {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
